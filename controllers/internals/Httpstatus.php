@@ -11,6 +11,13 @@ class Httpstatus extends \InternalController
         $this->model_httpstatus = new ModelHttpstatus($pdo);
     }
 
+
+    public function log(string $username, string $password)
+    {
+        $member = $this->model_httpstatus->connection($username, $password);
+        return $username & $password;
+    }
+
     public function getAllSites()
     {
     	$all = $this->model_httpstatus->get_all_sites();
@@ -23,6 +30,13 @@ class Httpstatus extends \InternalController
     	{
     		return false;
     	}
+    }
+
+
+    public function getOneSite(int $id)
+    {
+        $site = $this->model_httpstatus->get_one_site($id);
+        return $site;
     }
 
 

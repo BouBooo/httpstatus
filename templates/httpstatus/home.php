@@ -8,6 +8,7 @@
 		{
 			echo $site['url'];
 			echo '<br>';
+			echo '<a href="./view/'.$site['id'].'">View</a>';
 		}
 
 

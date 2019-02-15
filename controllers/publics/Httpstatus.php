@@ -11,12 +11,32 @@ class Httpstatus extends \Controller
         $this->internal_httpstatus = new InternalHttpstatus($pdo);
     }
 
+
+    public function logIn ()
+    {
+        $username = $_POST['username'];
+        $password = sha1($_POST['username']);
+        $logs = $this->internal_httpstatus->log($username, $password);   
+        return $this->render('httpstatus/connect', [
+            'sites' => $logs
+        ]);
+    }
     public function home ()
     {
         $sites = $this->internal_httpstatus->getAllSites();
         
         return $this->render('httpstatus/home', [
             'sites' => $sites
+        ]);
+    }
+
+    public function view ()
+    {
+        $id = $_GET['id'] ?? false;
+        $site = $this->internal_httpstatus->getOneSite($id);
+        return $this->render('httpstatus/view', [
+            'id' => $id,
+            'site' => $site
         ]);
     }
 
@@ -30,6 +50,7 @@ class Httpstatus extends \Controller
 
             if(!empty($name) && !empty($url))
             {
+                $_SESSION['add_error'] = "";
                 $sites = $this->internal_httpstatus->insertSite($name, $url);
                 header('Location: ./');
             }
@@ -44,4 +65,5 @@ class Httpstatus extends \Controller
         return $this->render('httpstatus/add');
 
     }
+
 }

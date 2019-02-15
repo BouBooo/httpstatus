@@ -13,7 +13,7 @@ Class Httpstatus extends \Model
 	public function get_one_site(int $id)
 	{
 		return $this->get_one('sites', [
-			'id' => $id
+			'id' => $_GET['id']
 		]);
 	}
 
@@ -25,7 +25,13 @@ Class Httpstatus extends \Model
 		]);
 	}
 
-	
+	public function connection(string $name, string $password)
+	{
+		return $this->login('admins', [
+			'username' => $username,
+			'password' => $password
+		]);
+	}
 
 }
 

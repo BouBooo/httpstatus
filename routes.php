@@ -2,7 +2,9 @@
     $routes = array(
 		'Httpstatus' => [
 			'home' => '/',
-			'add' => '/add'
+			'add' => '/add',
+			'view' => '/view/{id}',
+			'login' => '/connect'
         ],
     );
 
