@@ -17,6 +17,14 @@ Class Httpstatus extends \Model
 		]);
 	}
 
+	public function add_site(string $name, string $url)
+	{
+		return $this->insert('sites', [
+			'name' => $name,
+			'url' => $url
+		]);
+	}
+
 	
 
 }

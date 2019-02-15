@@ -2,6 +2,7 @@
     $routes = array(
 		'Httpstatus' => [
 			'home' => '/',
+			'add' => '/add'
         ],
     );
 

@@ -25,4 +25,19 @@ class Httpstatus extends \InternalController
     	}
     }
 
+
+    public function insertSite(string $name, string $url)
+    {
+        $insert = $this->model_httpstatus->add_site($name, $url);
+
+        if($insert)
+        {
+            return $insert;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }

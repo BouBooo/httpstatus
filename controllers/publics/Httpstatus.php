@@ -19,4 +19,29 @@ class Httpstatus extends \Controller
             'sites' => $sites
         ]);
     }
+
+    public function add ()
+    {
+        $_SESSION['add_error'] = "";
+        if(!empty($_POST['add']))
+        {
+            $name = $_POST['name'];
+            $url = $_POST['url'];
+
+            if(!empty($name) && !empty($url))
+            {
+                $sites = $this->internal_httpstatus->insertSite($name, $url);
+                header('Location: ./');
+            }
+            else
+            {
+                var_dump($name, $url);
+                $_SESSION['add_error'] = 'Thanks to complete all inputs';
+                return $this->render('httpstatus/add');
+
+            }
+        }
+        return $this->render('httpstatus/add');
+
+    }
 }
