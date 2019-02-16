@@ -17,7 +17,7 @@ Class Httpstatus extends \Model
 		]);
 	}
 
-	public function add_site(string $name, string $url)
+	public function add_site(istring $name, string $url)
 	{
 		return $this->insert('sites', [
 			'name' => $name,
@@ -25,11 +25,22 @@ Class Httpstatus extends \Model
 		]);
 	}
 
-	public function connection(string $name, string $password)
+	public function connection(int $id)
 	{
-		return $this->login('admins', [
-			'username' => $username,
-			'password' => $password
+		return $this->get_one('admins', [
+		'id' => $id
+		]);
+	}
+
+	public function admin_dashboard()
+	{
+		return $this->get('sites');
+	}
+
+	public function delete_site($id)
+	{
+		return $this->delete('sites',[
+			'id' => $id
 		]);
 	}
 

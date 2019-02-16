@@ -12,10 +12,17 @@ class Httpstatus extends \InternalController
     }
 
 
-    public function log(string $username, string $password)
+    public function log(int $id)
     {
-        $member = $this->model_httpstatus->connection($username, $password);
-        return $username & $password;
+        $admin = $this->model_httpstatus->get_admin($id);
+        if ($admin)
+        {
+            return $admin;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public function getAllSites()
@@ -52,6 +59,25 @@ class Httpstatus extends \InternalController
         {
             return false;
         }
+    }
+
+    public function get_sites_admin()
+    {
+        $all = $this->model_httpstatus->admin_dashboard();
+
+        if($all)
+        {
+            return $all;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function delete_one_site(int $id)
+    {
+        $sites = $this->model_httpstatus->delete_site($id);
     }
 
 }

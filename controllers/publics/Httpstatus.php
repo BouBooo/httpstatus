@@ -12,14 +12,33 @@ class Httpstatus extends \Controller
     }
 
 
-    public function logIn ()
+    public function login (int $id)
     {
-        $username = $_POST['username'];
-        $password = sha1($_POST['username']);
-        $logs = $this->internal_httpstatus->log($username, $password);   
-        return $this->render('httpstatus/connect', [
-            'sites' => $logs
-        ]);
+        $id = $_GET['id'];
+        
+        if(!empty($_POST))
+        {
+
+            $email = $_POST['email'];
+            $password = sha1($_POST['password']);
+            $admin = $this->internal_httpstatus->log($id);
+
+            if(!empty($email) && !empty($password))
+            {
+                if($email == $admin['email'] && $password = $admin['password'])
+                {
+                    return $this->render('httpstatus/admin');
+                }
+                else
+                {
+                    $_SESSION['log_error'] = 'Wrong password/email';
+                    return $this->render('httpstatus/admin');
+                }
+            }
+        }
+
+
+
     }
     public function home ()
     {
@@ -30,13 +49,12 @@ class Httpstatus extends \Controller
         ]);
     }
 
-    public function view ()
+    public function view (int $id)
     {
-        $id = $_GET['id'] ?? false;
-        $site = $this->internal_httpstatus->getOneSite($id);
+        $id = $id ?? false;
+        $sites = $this->internal_httpstatus->getOneSite($id);
         return $this->render('httpstatus/view', [
-            'id' => $id,
-            'site' => $site
+            'sites' => $sites
         ]);
     }
 
@@ -65,5 +83,25 @@ class Httpstatus extends \Controller
         return $this->render('httpstatus/add');
 
     }
+
+
+    public function admin ()
+    {
+        $sites = $this->internal_httpstatus->get_sites_admin();
+        
+        return $this->render('httpstatus/admin', [
+            'sites' => $sites
+        ]);
+    }
+
+
+    public function delete (int $id)
+    {
+            $id = $id ?? false;
+            $deletion = $this->internal_httpstatus->delete_one_site($id);
+            header('Location: ../admin');
+    }
+
+
 
 }
