@@ -4,7 +4,7 @@
 			'home' => '/',
 			'add' => '/add',
 			'view' => '/view/{id}',
-			'login' => '/connect',
+			'login' => '/connexion',
 			'admin' => '/admin',
 			'delete' => '/delete/{id}'
         ],

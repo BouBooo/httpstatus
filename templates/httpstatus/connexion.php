@@ -7,7 +7,7 @@
 	<?php
 	if($_SESSION['log_error'])
 	{
-		echo $log_error;
+		echo $_SESSION['log_error'];
 	}
 	?>
 

@@ -12,34 +12,34 @@ class Httpstatus extends \Controller
     }
 
 
-    public function login (int $id)
+    public function login ()
     {
-        $id = $_GET['id'];
-        
-        if(!empty($_POST))
+        $_SESSION['log_error'] = "";
+        $email = $_POST['email'] ?? false;
+        $password = sha1($_POST['password']) ?? false;
+
+        if(!$email || !$password)
         {
-
-            $email = $_POST['email'];
-            $password = sha1($_POST['password']);
-            $admin = $this->internal_httpstatus->log($id);
-
-            if(!empty($email) && !empty($password))
+            return $this->render('httpstatus/connexion');
+        }
+        else
+        {
+            $admin = $this->internal_httpstatus->log($email, $password);
+            if($admin)
             {
-                if($email == $admin['email'] && $password = $admin['password'])
-                {
-                    return $this->render('httpstatus/admin');
-                }
-                else
-                {
-                    $_SESSION['log_error'] = 'Wrong password/email';
-                    return $this->render('httpstatus/admin');
-                }
+                session_start();
+                $_SESSION['id'] = $admin['id'];
+                header('Location: ./admin');
+            }
+            else
+            {
+                $_SESSION['log_error'] = "Get admin error";
+                return $this->render('httpstatus/connexion');
             }
         }
 
-
-
     }
+
     public function home ()
     {
         $sites = $this->internal_httpstatus->getAllSites();
@@ -51,10 +51,9 @@ class Httpstatus extends \Controller
 
     public function view (int $id)
     {
-        $id = $id ?? false;
         $sites = $this->internal_httpstatus->getOneSite($id);
         return $this->render('httpstatus/view', [
-            'sites' => $sites
+            'site' => $sites
         ]);
     }
 

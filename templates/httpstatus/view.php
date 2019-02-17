@@ -1,15 +1,23 @@
 <?php \controllers\internals\Incs::head('Httpstatus'); ?>
-<?php include_once(PWD_TEMPLATES  . '/incs/nav.php'); ?>
-
-    <h1>Httpstatus</h1>
-
-    <a href="../">Retour</a>
+<?php \controllers\internals\Incs::nav('Httpstatus'); ?>
 
 
-<?php
+<div class="container">
+		    <h1>Httpstatus</h1>
+
+		    <a href="../" class="btn btn-dark">Retour</a>
+
+		    <br>
+		    <br>
 
 
-	var_dump($sites, $id);
+		<?php
 
 
- ?>
+			echo $site['url'];
+
+
+		 ?>
+
+
+</div>

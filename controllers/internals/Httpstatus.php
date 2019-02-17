@@ -12,10 +12,10 @@ class Httpstatus extends \InternalController
     }
 
 
-    public function log(int $id)
+    public function log(string $email, string $password)
     {
-        $admin = $this->model_httpstatus->get_admin($id);
-        if ($admin)
+        $admin = $this->model_httpstatus->connection($email, $password);
+        if($admin)
         {
             return $admin;
         }

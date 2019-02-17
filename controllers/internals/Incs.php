@@ -20,4 +20,13 @@ class Incs extends \Controller
 		return self::render("incs/footer");
     }
 
+
+    /**
+     * Footer html
+     */
+    public static function nav ()
+    {
+		return self::render("incs/nav");
+    }
+
 }

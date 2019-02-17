@@ -13,11 +13,11 @@ Class Httpstatus extends \Model
 	public function get_one_site(int $id)
 	{
 		return $this->get_one('sites', [
-			'id' => $_GET['id']
+			'id' => $id
 		]);
 	}
 
-	public function add_site(istring $name, string $url)
+	public function add_site(string $name, string $url)
 	{
 		return $this->insert('sites', [
 			'name' => $name,
@@ -25,10 +25,12 @@ Class Httpstatus extends \Model
 		]);
 	}
 
-	public function connection(int $id)
+	public function connection(string $email, string $password)
 	{
-		return $this->get_one('admins', [
-		'id' => $id
+		return $this->get('admins', [
+		'id' => 1,
+		'email' => $email,
+		'password' => $password	
 		]);
 	}
 

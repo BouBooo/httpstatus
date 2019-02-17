@@ -49,12 +49,6 @@
             return $pdo;
         }
 
-
-        public static function login (string $username, string $password)
-        {
-            return $username & $password;
-        }
-
         /**
          * Run a query and return result
          * @param string $query : Query to run

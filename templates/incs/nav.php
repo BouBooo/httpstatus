@@ -25,7 +25,7 @@ a {
       <a class="navbar-brand" href="./">Httpstatus</a>
     </div>
     <ul class="nav navbar-nav">
-        <li class="active"><a href="./connect">Connexion</a></li>
+        <li class="active"><a href="./connexion">Connexion</a></li>
     </ul>
     <ul class="nav navbar-nav">
         <li class="active"><a href="./admin">Admin Dashboard</a></li>
