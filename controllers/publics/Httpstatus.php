@@ -73,8 +73,7 @@ class Httpstatus extends \Controller
             }
             else
             {
-                var_dump($name, $url);
-                $_SESSION['add_error'] = 'Thanks to complete all inputs';
+                $_SESSION['add_error'] = '<span class="alert alert-danger">Thanks to complete all inputs</span>';
                 return $this->render('httpstatus/add');
 
             }
