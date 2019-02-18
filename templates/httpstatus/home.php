@@ -19,7 +19,6 @@
 
 	<h3> Votre site de monitoring en ligne </h3>
 
-		<a href="./add" class="btn btn-dark"><h5>Ajouter un site</h5></a>
 
 </div>
 

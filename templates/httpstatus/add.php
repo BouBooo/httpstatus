@@ -1,14 +1,17 @@
 <?php \controllers\internals\Incs::head('Httpstatus'); ?>
 <?php \controllers\internals\Incs::nav('Httpstatus'); ?>
 
-    <h1>Httpstatus</h1>
 
-    <a href="./">Retour</a>
+
 
 
 
 
 <div class="container">
+	    <a href="./admin" class="btn btn-dark">Retour</a>
+	    <br>
+	    <br>
+
 	<form method="POST" action="">
 
 		<table class="table table-striped">

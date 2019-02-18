@@ -33,7 +33,7 @@ class Httpstatus extends \Controller
             }
             else
             {
-                $_SESSION['log_error'] = "Get admin error";
+                $_SESSION['log_error'] = '<span class="alert alert-danger">Wrong email / password </span>';
                 return $this->render('httpstatus/connexion');
             }
         }
