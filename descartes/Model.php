@@ -49,6 +49,12 @@
             return $pdo;
         }
 
+
+        public static login(string $email, string $password)
+        {
+            
+        }
+
         /**
          * Run a query and return result
          * @param string $query : Query to run
@@ -217,7 +223,7 @@
                 $params = array_merge($params, $condition['PARAM']);
             }
 
-            $query = "SELECT * FROM " . $table . " WHERE 1 " . (count($wheres) ? 'AND ' : '') . implode(' AND ', $wheres);
+            $query = "SELECT * FROM " . $table . " WHERE 1 " . (count($wheres) ? ' AND ' : '') . implode(' AND ', $wheres);
 
             if ($order_by !== null)
             {
@@ -294,7 +300,7 @@
                 $params = array_merge($params, $condition['PARAM']);
             }
 
-            $query = "SELECT COUNT(*) as `count` FROM " . $table . " WHERE 1 " . (count($wheres) ? 'AND ' : '') . implode(' AND ', $wheres);
+            $query = "SELECT COUNT(*) as `count` FROM " . $table . " WHERE 1 " . (count($wheres) ? ' AND ' : '') . implode(' AND ', $wheres);
             
             $query = $this->pdo->prepare($query);
 
