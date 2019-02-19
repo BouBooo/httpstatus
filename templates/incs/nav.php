@@ -15,7 +15,27 @@ a {
 }
 </style>
 
+<?php
+    if(!empty($_SESSION['admin']))
+    {
+        $nav_connect = '    <ul class="nav navbar-nav">
+                                <li class="active"><a href="./admin">Admin Dashboard</a></li>
+                            </ul>
+                            <ul class="nav navbar-nav">
+                                <li class="active"><a href="./deconnexion">Deconnexion</a></li>
+                            </ul>';
+    }
+    else
+    {
+        $nav_connect = '    <ul class="nav navbar-nav">
+                                <li class="active"><a href="./connexion">Connexion</a></li>
+                            </ul>';
+    }
 
+
+
+
+?>
 
 <!-- NAV -->
 
@@ -24,12 +44,8 @@ a {
     <div class="navbar-header">
       <a class="navbar-brand" href="./">Httpstatus</a>
     </div>
-    <ul class="nav navbar-nav">
-        <li class="active"><a href="./connexion">Connexion</a></li>
-    </ul>
-    <ul class="nav navbar-nav">
-        <li class="active"><a href="./admin">Admin Dashboard</a></li>
-    </ul>
+    <?= $nav_connect; ?>
+
   </div>
 </nav> 
 

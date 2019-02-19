@@ -27,8 +27,7 @@ class Httpstatus extends \Controller
             $admin = $this->internal_httpstatus->log($email, $password);
             if($admin)
             {
-                session_start();
-                $_SESSION['id'] = $admin['id'];
+                $_SESSION['admin'] = $admin;
                 header('Location: ./admin');
             }
             else
@@ -36,6 +35,18 @@ class Httpstatus extends \Controller
                 $_SESSION['log_error'] = '<span class="alert alert-danger">Wrong email / password </span>';
                 return $this->render('httpstatus/connexion');
             }
+        }
+
+    }
+
+
+    public function logout ()
+    {
+        if(!empty($_SESSION['admin']))
+        {
+            session_destroy();
+            header('Location: ./');
+
         }
 
     }
@@ -85,11 +96,20 @@ class Httpstatus extends \Controller
 
     public function admin ()
     {
-        $sites = $this->internal_httpstatus->get_sites_admin();
-        
-        return $this->render('httpstatus/admin', [
-            'sites' => $sites
-        ]);
+        if(!empty($_SESSION['admin']))
+        {
+            session_start();
+            $sites = $this->internal_httpstatus->get_sites_admin();
+            
+            return $this->render('httpstatus/admin', [
+                'sites' => $sites
+            ]);
+        }
+        else
+        {
+            header('Location: ./');
+        }
+
     }
 
 

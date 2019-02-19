@@ -5,6 +5,7 @@
 			'add' => '/add',
 			'view' => '/view/{id}',
 			'login' => '/connexion',
+			'logout' => '/deconnexion',
 			'admin' => '/admin',
 			'delete' => '/delete/{id}'
         ],
