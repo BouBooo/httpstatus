@@ -50,11 +50,6 @@
         }
 
 
-        public static login(string $email, string $password)
-        {
-            
-        }
-
         /**
          * Run a query and return result
          * @param string $query : Query to run
