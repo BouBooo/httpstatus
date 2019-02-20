@@ -7,7 +7,8 @@
 			'login' => '/connexion',
 			'logout' => '/deconnexion',
 			'admin' => '/admin',
-			'delete' => '/delete/{id}'
+			'delete' => '/delete/{id}',
+			'update' => '/update/{id}'
         ],
     );
 

@@ -39,6 +39,20 @@ class Httpstatus extends \InternalController
     	}
     }
 
+    public function sitesStatus()
+    {
+        $sites = $this->model_httpstatus->get_sites_status();
+
+        if($sites)
+        {
+            return $sites;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 
     public function getOneSite(int $id)
     {
@@ -78,6 +92,21 @@ class Httpstatus extends \InternalController
     public function delete_one_site(int $id)
     {
         $sites = $this->model_httpstatus->delete_site($id);
+    }
+
+
+
+    public function update_one_site(int $id, string $name, string $url)
+    {
+       
+        $site = $this->model_httpstatus->get_one_site($id);
+        $update = $this->model_httpstatus->update_site(
+            $site['id'],
+            $name,
+            $url
+        );
+        
+        return $site;
     }
 
 }

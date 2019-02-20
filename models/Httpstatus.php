@@ -46,6 +46,22 @@ Class Httpstatus extends \Model
 		]);
 	}
 
+	public function update_site(int $id, string $name, string $url)
+	{
+		return $this->update('sites', [
+			'name' => $name,
+			'url' => $url
+		],
+	     [
+            'id' => $id
+         ]);
+	}
+
+	public function get_sites_status()
+	{
+		return $this->get('sites');
+	}
+
 }
 
 

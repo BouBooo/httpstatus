@@ -80,7 +80,7 @@ class Httpstatus extends \Controller
             {
                 $_SESSION['add_error'] = "";
                 $sites = $this->internal_httpstatus->insertSite($name, $url);
-                header('Location: ./');
+                header('Location: ./admin');
             }
             else
             {
@@ -120,6 +120,85 @@ class Httpstatus extends \Controller
             header('Location: ../admin');
     }
 
+    public function update (int $id)
+    {
+
+        $getSite = $this->internal_httpstatus->getOneSite($id);
+        $name = $getSite['name'];  
+        $url = $getSite['url'];  
+        $_SESSION['update_error'] = "";
+
+        if(!empty($_POST['update']))
+        {
+            if(!empty($_POST['url']) && !empty($_POST['name']))
+            {
+                if($url != $_POST['url'] || $name != $_POST['name'])
+                {
+                    $name = $_POST['name'];
+                    $url = $_POST['url'];
+                    $update = $this->internal_httpstatus->update_one_site($id, $name, $url);
+                    header('Location: ../../httpstatus/admin');  
+                }
+                else
+                {
+                    $_SESSION['update_error'] = '<span class="alert alert-danger">Aucun changement detecté</span>';
+                    return $this->render('httpstatus/update', [
+                        'id' => $id,
+                        'url' => $url,
+                        'name' => $name
+                    ]);
+
+                }
+
+            }
+            else
+            {
+                $_SESSION['update_error'] = '<span class="alert alert-danger">Please complete all inputs</span>';
+                return $this->render('httpstatus/update', [
+                    'id' => $id,
+                    'url' => $url,
+                    'name' => $name
+                ]);
+            }
+        }
+        else 
+        {
+            return $this->render('httpstatus/update', [
+                'id' => $id,
+                'url' => $url,
+                'name' => $name
+            ]);
+        }
+    }
+
+
+
+    public function getStatus()
+    {
+        /*$sites = $this->internal_httpstatus->sitesStatus();*/
+        while(true)
+        {
+            sleep(120);
+            echo 'site checked';
+            /*foreach ($sites as $site_status)
+            {
+                    $url = $site_status['url'];
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_HEADER, true);   
+                    curl_setopt($ch, CURLOPT_NOBODY, true);    
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+                    curl_setopt($ch, CURLOPT_TIMEOUT,10);
+                    $output = curl_exec($ch);
+                    $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                    curl_close($ch);
+                    $_SESSION['status_'.$url] = $httpcode;
+                    $query = $pdo->prepare('INSERT INTO status (site_id, code, date_report) VALUES(?,?, NOW())');
+                    $query->execute(array($site_status['id'], $httpcode));
+            }*/
+        }
+
+        
+    }
 
 
 }
