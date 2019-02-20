@@ -35,6 +35,72 @@ class Api extends \Controller
     }
 
 
+    public function list()
+    {
+    	$api_key = $this->internal_api->get_api_key();
+    	$api = $_GET['api_key'] ?? false;
+
+    	if($api_key == $api)
+    	{
+    		$sites = $this->internal_api->getSites();
+    		$sites_array = [];
+
+    		foreach($sites as $site)
+    		{
+    			array_push($sites_array, $site);
+            }
+
+    		return $this->api_controller->json(array(
+    			'version' => 1,
+    			'sites' => $sites_array
+    		));
+    	}
+    	else
+    	{
+    		return $this->api_controller->json(array(
+    			'api_key' => 'not valid'
+    		));
+    	}
+    }
+
+
+    public function insert(string $name, string $url)
+    {
+    	$name = $_POST['name'] ?? false;
+    	$url = $_POST['url'] ?? false;
+    	$api_key = $this->internal_api->get_api_key();
+    	$api = $_GET['api_key'] ?? false;
+
+    	if($api_key == $api)
+    	{
+    		$insert = $this->internal_api->insertSite($name, $url);
+
+    		if($insert)
+    		{
+    			return $this->api_controller->json(array(
+	    			'success' => true,
+	    			'id' => $id
+	    		));	
+    		}
+    		else
+    		{
+    			return $this->api_controller->json(array(
+	    			'success' => false
+	    		));
+    		}
+
+    	}
+    	else
+    	{
+    		return $this->api_controller->json(array(
+    			'api_key' => 'not valid'
+    		));
+    	}	
+    }
+
+
+
+
     public function delete(int $id)
     {
     	$api_key = $this->internal_api->get_api_key();

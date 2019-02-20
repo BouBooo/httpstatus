@@ -13,6 +13,8 @@
 
         'Api' => [
         	'home' => '/api/',
+        	'list' => '/api/list',
+        	'insert' => '/api/add',
         	'delete' => '/api/delete/{id}'
         ]
     );

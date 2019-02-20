@@ -25,6 +25,30 @@ class Api extends \InternalController
 		}
 	}
 
+
+	public function getSites()
+	{
+		$sites = $this->model_api->get_sites();
+		return $sites;
+	}
+
+
+
+	public function insertSite(string $name, string $url)
+	{
+		$insert = $this->model_api->add_on_site($name, $url);
+
+		if($insert)
+		{
+			return $insert;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+
 	public function deleteSite(int $id)
 	{
 		$delete = $this->model_api->delete_one_site($id);
