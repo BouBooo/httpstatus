@@ -9,6 +9,13 @@ Class Api extends \Model
 	{
 		return $this->get_one('admins');
 	}
+
+	public function delete_one_site(int $id)
+	{
+		return $this->delete('sites', [
+			'id' => $id
+		]);
+	}
 }
 
 ?>

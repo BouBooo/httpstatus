@@ -24,7 +24,7 @@ Class Httpstatus extends \Model
 			'url' => $url
 		]);
 	}
-
+				//     :)
 	public function connection(string $email, string $password)
 	{
 		return $this->get('admins', [

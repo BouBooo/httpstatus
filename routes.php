@@ -10,6 +10,11 @@
 			'delete' => '/delete/{id}',
 			'update' => '/update/{id}'
         ],
+
+        'Api' => [
+        	'home' => '/api/',
+        	'delete' => '/api/delete/{id}'
+        ]
     );
 
     define('ROUTES', $routes);
