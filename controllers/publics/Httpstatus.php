@@ -175,10 +175,7 @@ class Httpstatus extends \Controller
 
     public function getStatus()
     {
-        /*$sites = $this->internal_httpstatus->sitesStatus();*/
-        while(true)
-        {
-            sleep(120);
+        /**/$sites = $this->internal_httpstatus->sitesStatus();
             echo 'site checked';
             /*foreach ($sites as $site_status)
             {
@@ -195,7 +192,6 @@ class Httpstatus extends \Controller
                     $query = $pdo->prepare('INSERT INTO status (site_id, code, date_report) VALUES(?,?, NOW())');
                     $query->execute(array($site_status['id'], $httpcode));
             }*/
-        }
 
         
     }

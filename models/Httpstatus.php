@@ -52,9 +52,9 @@ Class Httpstatus extends \Model
 			'name' => $name,
 			'url' => $url
 		],
-	     [
+	    [
             'id' => $id
-         ]);
+        ]);
 	}
 
 	public function get_sites_status()
