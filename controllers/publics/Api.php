@@ -47,12 +47,20 @@ class Api extends \Controller
 
     		foreach($sites as $site)
     		{
-    			array_push($sites_array, $site);
+    			$actions = [
+    				'id' => $site['id'],
+    				'name' => $site['name'],
+    				'url' => $site['url'],
+	    			'delete' => 'localhost/api/delete/'.$site['id'],
+	    			'status' => 'localhost/api/status/'.$site['id'],
+	    			'history' => 'localhost/api/history/'.$site['id'],
+    		];
+    			array_push($sites_array, $actions);
             }
 
     		return $this->api_controller->json(array(
     			'version' => 1,
-    			'sites' => $sites_array
+    			'websites' => $sites_array
     		));
     	}
     	else
