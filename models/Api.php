@@ -36,6 +36,11 @@ Class Api extends \Model
 			'id' => $id
 		]);
 	}
+
+	public function check_status()
+	{
+		return $this->get('sites');
+	}
 }
 
 ?>

@@ -84,10 +84,27 @@ class Api extends \Controller
 
     		if($site)
     		{
+    			$url = $site['url'];
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_HEADER, true);   
+				curl_setopt($ch, CURLOPT_NOBODY, true);    
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+				curl_setopt($ch, CURLOPT_TIMEOUT,10);
+				$output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				curl_close($ch);
+
+    			$infos = [
+    				'code' => $httpcode,
+    				'at' => $date
+    			];
+
+
     			return $this->api_controller->json(array(
 	    			'id' => $id,
 	    			'name' => $site['name'],
-	    			'url' => $site['url']
+	    			'url' => $site['url'],
+	    			'status' => $infos
 	    		));	
     		}
     		else
@@ -107,44 +124,49 @@ class Api extends \Controller
     }
 
 
-
-
-
-
-    public function insert(string $name, string $url)
+    public function check()
     {
-    	$name = $_POST['name'] ?? false;
-    	$url = $_POST['url'] ?? false;
     	$api_key = $this->internal_api->get_api_key();
     	$api = $_GET['api_key'] ?? false;
 
     	if($api_key == $api)
     	{
-    		$insert = $this->internal_api->insertSite($name, $url);
+    		$sites = $this->internal_api->getSites();
+    		$sites_array = [];
 
-    		if($insert)
+    		foreach($sites as $site)
     		{
-    			return $this->api_controller->json(array(
-	    			'success' => true,
-	    			'id' => $id
-	    		));	
-    		}
-    		else
-    		{
-    			return $this->api_controller->json(array(
-	    			'success' => false
-	    		));
-    		}
+				$url = $site['url'];
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_HEADER, true);   
+				curl_setopt($ch, CURLOPT_NOBODY, true);    
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+				curl_setopt($ch, CURLOPT_TIMEOUT,10);
+				$output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				curl_close($ch);
 
+    			$infos = [
+    				'id' => $site['id'],
+    				'name' => $site['name'],
+    				'url' => $site['url'],
+    				'code' => $httpcode
+    		];
+    			array_push($sites_array, $infos);
+            }
+
+    		return $this->api_controller->json(array(
+    			'version' => 1,
+    			'websites' => $sites_array
+    		));
     	}
     	else
     	{
     		return $this->api_controller->json(array(
     			'api_key' => 'not valid'
     		));
-    	}	
+    	}
     }
-
 
 
 
@@ -178,5 +200,40 @@ class Api extends \Controller
     			'api_key' => 'not valid'
     		));
     	}
+    }
+
+
+
+    public function insert(string $name, string $url)
+    {
+    	$name = $_GET['name'] ?? false;
+    	$url = $_GET['url'] ?? false;
+    	$api_key = $this->internal_api->get_api_key();
+    	$api = $_GET['api_key'] ?? false;
+
+    	if($api_key == $api)
+    	{
+    		$insert = $this->internal_api->insertSite($name, $url);
+
+    		if($insert)
+    		{
+    			return $this->api_controller->json(array(
+	    			'success' => true
+	    		));	
+    		}
+    		else
+    		{
+    			return $this->api_controller->json(array(
+	    			'success' => false
+	    		));
+    		}
+
+    	}
+    	else
+    	{
+    		return $this->api_controller->json(array(
+    			'api_key' => 'not valid'
+    		));
+    	}	
     }
 }

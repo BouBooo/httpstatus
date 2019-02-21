@@ -69,4 +69,19 @@ class Api extends \InternalController
 		}
 	}
 
+	public function checkStatus()
+	{
+		$status = $this->model_api->check_status();
+
+		if($status)
+		{
+			return $status;
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+
 }
