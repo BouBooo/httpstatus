@@ -95,6 +95,7 @@ class Api extends \Controller
 				$output = curl_exec($ch);
 				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 				curl_close($ch);
+				$date = date('Y-m-d H:i');
 
     			$infos = [
     				'code' => $httpcode,
@@ -133,11 +134,6 @@ class Api extends \Controller
 
     public function check_status()
     {
-    	while(true)
-    	{
-    		sleep(20);
-    		
-    	}
     	// Check api_key
     	$id = $id ?? false;
     	$api_key = $this->internal_api->get_api_key();
