@@ -17,7 +17,7 @@
         	'status' => '/api/status/{id}',
         	'insert' => '/api/add',
         	'delete' => '/api/delete/{id}',
-        	'check' => '/api/check'
+        	'check_status' => '/api/sites'
         ]
     );
 

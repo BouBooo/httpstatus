@@ -11,6 +11,21 @@ class Api extends \InternalController
         $this->model_api = new ModelApi($pdo);
     }
 
+    public function newQuery()
+    {
+    	$newQuery = $this->model_api->new_query();
+
+    	if($newQuery)
+		{
+			return $newQuery;
+		}
+		else
+		{
+			return false;
+		}
+
+    }
+
 	public function get_api_key()
 	{
 		$api_key = $this->model_api->getApiKey();

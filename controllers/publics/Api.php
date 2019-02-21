@@ -74,6 +74,7 @@ class Api extends \Controller
 
     public function status(int $id)
     {
+    	// Check api_key
     	$id = $id ?? false;
     	$api_key = $this->internal_api->get_api_key();
     	$api = $_GET['api_key'] ?? false;
@@ -84,6 +85,7 @@ class Api extends \Controller
 
     		if($site)
     		{
+    			// Get site's httpcode
     			$url = $site['url'];
 				$ch = curl_init($url);
 				curl_setopt($ch, CURLOPT_HEADER, true);   
@@ -100,6 +102,7 @@ class Api extends \Controller
     			];
 
 
+    			// Return infos and last status for this site
     			return $this->api_controller->json(array(
 	    			'id' => $id,
 	    			'name' => $site['name'],
@@ -122,6 +125,80 @@ class Api extends \Controller
     		));
     	}	
     }
+
+
+
+
+
+
+    public function check_status()
+    {
+    	while(true)
+    	{
+    		sleep(20);
+    		
+    	}
+    	// Check api_key
+    	$id = $id ?? false;
+    	$api_key = $this->internal_api->get_api_key();
+    	$api = $_GET['api_key'] ?? false;
+
+    	if($api_key == $api)
+    	{
+    		// Connect to database & get sites infos
+    		$sites = $this->internal_api->getSites();
+    		$query = $this->internal_api->newQuery();
+    		$sites_array = [];
+
+    		if($sites)
+    		{
+    			foreach ($sites as $key => $site) {
+    				// Check each site status
+	    			$url = $site['url'];
+					$ch = curl_init($url);
+					curl_setopt($ch, CURLOPT_HEADER, true);   
+					curl_setopt($ch, CURLOPT_NOBODY, true);    
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+					curl_setopt($ch, CURLOPT_TIMEOUT,10);
+					$output = curl_exec($ch);
+					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+					curl_close($ch);
+
+		   			$infos = [
+		    				'id' => $site['id'],
+		    				'name' => $site['name'],
+		    				'url' => $site['url'],
+			    			'code' => $httpcode
+		    		];
+
+		    		array_push($sites_array, $infos);
+
+		    		// Save every httpcode returned
+		    		$status = $query->prepare('INSERT INTO status (site_id, code, date_report) VALUES(?,?, NOW())');
+					$status->execute(array($site['id'], $httpcode));
+				}
+
+    			return $this->api_controller->json(array(
+	    			'status' => $sites_array
+	    		));	
+    		}
+    		else
+    		{
+    			return $this->api_controller->json(array(
+	    			'success' => false,
+	    			'error' => 'Invalid id'
+	    		));
+    		}
+    	}
+    	else
+    	{
+    		return $this->api_controller->json(array(
+    			'api_key' => 'not valid'
+    		));
+    	}	
+    }
+
+
 
 
     public function check()

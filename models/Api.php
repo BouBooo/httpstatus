@@ -1,10 +1,15 @@
 <?php
 
-
+    //$pdo = new PDO('mysql:host=localhost;dbname=nicolas_lecossec;charset=UTF-8, root, bernardbernard');
 namespace models;
 
 Class Api extends \Model 
 {
+
+	public function new_query()
+	{
+		return $this->connect('localhost', 'nicolas_lecossec', 'root', 'bernardbernard');
+	}
 	public function getApiKey()
 	{
 		return $this->get_one('admins');
