@@ -47,7 +47,7 @@ class Api extends \Controller
 
     		foreach($sites as $site)
     		{
-    			$actions = [
+    			$infos = [
     				'id' => $site['id'],
     				'name' => $site['name'],
     				'url' => $site['url'],
@@ -55,7 +55,7 @@ class Api extends \Controller
 	    			'status' => 'localhost/api/status/'.$site['id'],
 	    			'history' => 'localhost/api/history/'.$site['id'],
     		];
-    			array_push($sites_array, $actions);
+    			array_push($sites_array, $infos);
             }
 
     		return $this->api_controller->json(array(
@@ -70,6 +70,45 @@ class Api extends \Controller
     		));
     	}
     }
+
+
+    public function status(int $id)
+    {
+    	$id = $id ?? false;
+    	$api_key = $this->internal_api->get_api_key();
+    	$api = $_GET['api_key'] ?? false;
+
+    	if($api_key == $api)
+    	{
+    		$site = $this->internal_api->getOneSite($id);
+
+    		if($site)
+    		{
+    			return $this->api_controller->json(array(
+	    			'id' => $id,
+	    			'name' => $site['name'],
+	    			'url' => $site['url']
+	    		));	
+    		}
+    		else
+    		{
+    			return $this->api_controller->json(array(
+	    			'success' => false,
+	    			'error' => 'Invalid id'
+	    		));
+    		}
+    	}
+    	else
+    	{
+    		return $this->api_controller->json(array(
+    			'api_key' => 'not valid'
+    		));
+    	}	
+    }
+
+
+
+
 
 
     public function insert(string $name, string $url)

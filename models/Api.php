@@ -15,7 +15,12 @@ Class Api extends \Model
 		return $this->get('sites');
 	}
 
-
+	public function get_one_site(int $id)
+	{
+		return $this->get_one('sites', [
+			'id' => $id
+		]);
+	}
 
 	public function add_one_site(string $name, string $url)
 	{	

@@ -32,6 +32,12 @@ class Api extends \InternalController
 		return $sites;
 	}
 
+	public function getOneSite(int $id)
+	{
+		$site = $this->model_api->get_one_site($id);
+		return $site;
+	}
+
 
 
 	public function insertSite(string $name, string $url)
