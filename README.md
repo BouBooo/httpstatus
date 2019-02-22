@@ -7,10 +7,17 @@
  * Environnement : Linux (Ubuntu)
  
  
- ## API
+ ## Site
+ 
+ 
+ * Admin : Peut ajouter un site, le modifier, le supprimer ou consulter son historique 
+ * Visiteur : Peut consulter l'historique de chaque site
+ 
+ 
+ 
+## API
 
-
-Le site doit posséder une API qui permet de :
+Le site possède une API qui permet de :
 
 - Lister les sites
 ```
