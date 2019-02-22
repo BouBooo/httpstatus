@@ -57,7 +57,7 @@ class Api extends \InternalController
 
 	public function insertSite(string $name, string $url)
 	{
-		$insert = $this->model_api->add_on_site($name, $url);
+		$insert = $this->model_api->add_one_site($name, $url);
 
 		if($insert)
 		{
@@ -97,6 +97,21 @@ class Api extends \InternalController
 			return false;
 		}
 
+	}
+
+
+	public function getHistory(int $id)
+	{
+		$history = $this->model_api->get_history($id);
+
+		if($history)
+		{
+			return $history;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 }

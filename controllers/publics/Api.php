@@ -3,6 +3,7 @@ namespace controllers\publics;
 
 use \controllers\internals\Api as InternalApi;
 use \ApiController as ApiController;
+use \Model as Model;
 
 class Api extends \Controller
 {	
@@ -11,6 +12,7 @@ class Api extends \Controller
         parent::__construct($pdo);
         $this->internal_api = new InternalApi($pdo);
         $this->api_controller = new ApiController($pdo);
+        $this->model = new Model($pdo);
     }
 
     public function home()
@@ -22,7 +24,7 @@ class Api extends \Controller
     	{
     		return $this->api_controller->json(array(
     			'version' => 1,
-    			'list' => $_SERVER['SERVER_NAME'].'/httpstatus/api/list/'
+    			'list' => 'localhost/httpstatus/api/list/'
     		));
     	}
     	else
@@ -129,6 +131,60 @@ class Api extends \Controller
 
 
 
+    public function history(int $id)
+    {
+    	// Check api_key
+    	$id = $id ?? false;
+    	$api_key = $this->internal_api->get_api_key();
+    	$api = $_GET['api_key'] ?? false;
+
+    	if($api_key == $api)
+    	{
+    		$site = $this->internal_api->getOneSite($id);
+    		$history = $this->internal_api->getHistory($id);
+    		$query = $this->internal_api->newQuery();
+    		$status = [];
+
+    		if($site['id'] == $id)
+    		{
+    			// Show 30 last status for the site
+    			$history = $query->prepare('SELECT * FROM sites JOIN status ON sites.id = status.site_id WHERE status.site_id = ? ORDER BY status.id DESC LIMIT 30');
+    			$history->execute(array($site['id']));
+    			$status = [];
+
+    			foreach ($history as $key => $historic) {
+    				$infos = [
+    					'code' => $historic['code'],
+    					'at' => $historic['date_report']
+	    		];
+	    			array_push($status, $infos);
+    			}
+
+				return $this->api_controller->json(array(
+	    			'id' => $site['id'],
+	    			'name' => $site['name'],
+	    			'url' => $site['url'],
+	    			'status' => $status
+	    		));	
+			}
+    		else
+    		{
+    			return $this->api_controller->json(array(
+	    			'success' => false,
+	    			'error' => 'Invalid id'
+	    		));
+    		}
+    	}
+    	else
+    	{
+    		return $this->api_controller->json(array(
+    			'api_key' => 'not valid'
+    		));
+    	}	
+    }
+
+
+
 
 
 
@@ -170,8 +226,9 @@ class Api extends \Controller
 		    		array_push($sites_array, $infos);
 
 		    		// Save every httpcode returned
-		    		$status = $query->prepare('INSERT INTO status (site_id, code, date_report) VALUES(?,?, NOW())');
-					$status->execute(array($site['id'], $httpcode));
+		    		$time = (new \Datetime())->format('Y-m-d H:i:s');
+		    		$status = $query->prepare('INSERT INTO status (site_id, code, date_report) VALUES(?,?,?)');
+					$status->execute(array($site['id'], $httpcode, $time));
 				}
 
     			return $this->api_controller->json(array(
@@ -277,16 +334,17 @@ class Api extends \Controller
 
 
 
-    public function insert(string $name, string $url)
+    public function insert()
     {
-    	$name = $_GET['name'] ?? false;
-    	$url = $_GET['url'] ?? false;
+    	$name = $_POST['name'] ?? false;
+    	$url = $_POST['url'] ?? false;
     	$api_key = $this->internal_api->get_api_key();
     	$api = $_GET['api_key'] ?? false;
 
     	if($api_key == $api)
     	{
     		$insert = $this->internal_api->insertSite($name, $url);
+
 
     		if($insert)
     		{
