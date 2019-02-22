@@ -10,8 +10,8 @@
  ## Site
  
  
- Admin : Peut ajouter un site, le modifier, le supprimer ou consulter son historique 
- Visiteur : Peut consulter l'historique de chaque site
+ * Admin : Peut ajouter un site, le modifier, le supprimer ou consulter son historique 
+ * Visiteur : Peut consulter l'historique de chaque site
  
  
  
