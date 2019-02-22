@@ -344,12 +344,13 @@ class Api extends \Controller
     	if($api_key == $api)
     	{
     		$insert = $this->internal_api->insertSite($name, $url);
-
+    		$id = $this->model->last_id();
 
     		if($insert)
     		{
     			return $this->api_controller->json(array(
-	    			'success' => true
+	    			'success' => true,
+	    			'id' => $id
 	    		));	
     		}
     		else
