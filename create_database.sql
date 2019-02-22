@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS status
     id INT NOT NULL AUTO_INCREMENT,
     site_id INT NOT NULL,
     code INT NOT NULL,
-    date_report DATE NOT NULL,
+    date_report DATETIME NOT NULL,
     PRIMARY KEY (id)
 );
 
