@@ -5,6 +5,12 @@ namespace models;
 
 Class Httpstatus extends \Model 
 {
+
+	public function new_query()
+	{
+		return $this->connect('localhost', 'nicolas_lecossec', 'root', 'bernardbernard');
+	}
+	
 	public function get_all_sites()
 	{
 		return $this->get('sites');
@@ -62,6 +68,13 @@ Class Httpstatus extends \Model
 		return $this->get('sites');
 	}
 
+
+	public function get_history(int $id)
+	{
+		return $this->run_query("SELECT * FROM sites JOIN status ON sites.id = status.site_id WHERE status.site_id = 'id' ORDER BY status.id DESC LIMIT 30", [
+			'id' => $id
+			]);
+	}
 }
 
 

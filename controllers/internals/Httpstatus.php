@@ -109,4 +109,34 @@ class Httpstatus extends \InternalController
         return $site;
     }
 
+
+
+    public function getHistory(int $id)
+    {
+        $history = $this->model_httpstatus->get_history($id);
+
+        if($history)
+        {
+            return $history;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function newQuery()
+    {
+        $newQuery = $this->model_httpstatus->new_query();
+
+        if($newQuery)
+        {
+            return $newQuery;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
 }

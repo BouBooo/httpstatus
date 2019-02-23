@@ -2,6 +2,8 @@
 namespace controllers\publics;
 
 use \controllers\internals\Httpstatus as InternalHttpstatus;
+use \ApiController as ApiController;
+use \Model as Model;
 
 class Httpstatus extends \Controller
 {
@@ -9,6 +11,7 @@ class Httpstatus extends \Controller
     {
         parent::__construct($pdo);
         $this->internal_httpstatus = new InternalHttpstatus($pdo);
+        $this->api_controller = new ApiController($pdo);
     }
 
 
@@ -62,10 +65,43 @@ class Httpstatus extends \Controller
 
     public function view (int $id)
     {
-        $sites = $this->internal_httpstatus->getOneSite($id);
-        return $this->render('httpstatus/view', [
-            'site' => $sites
-        ]);
+        $id = $id ?? false;
+        $history = $this->internal_httpstatus->getHistory($id);
+        $site = $this->internal_httpstatus->getOneSite($id);
+        $query = $this->internal_httpstatus->newQuery();
+        $status = [];
+
+
+            if($site['id'] == $id)
+            {
+                // Show 30 last status for the site
+                $history = $query->prepare('SELECT * FROM sites JOIN status ON sites.id = status.site_id WHERE status.site_id = ? ORDER BY status.id DESC LIMIT 30');
+                $history->execute(array($site['id']));
+                $status = [];
+
+                foreach ($history as $key => $historic) {
+                    $infos = [
+                        'code' => $historic['code'],
+                        'at' => $historic['date_report']
+                ];
+                    array_push($status, $infos);
+                }
+
+                return $this->render('httpstatus/view', [
+                    'status' => $status
+                ]);
+            }
+            else
+            {
+                return $this->api_controller->json(array(
+                    'success' => false,
+                    'error' => 'Invalid id',
+                ));
+            }
+            /*return $this->render('httpstatus/view', [
+            'site' => $sites,
+            'status' => $status
+        ]);*/
     }
 
     public function add ()

@@ -13,8 +13,9 @@
 
 		<?php
 
-
-			echo $site['url'];
+		echo '<pre>';
+		var_dump($status);
+		echo '</pre>';
 
 
 		 ?>

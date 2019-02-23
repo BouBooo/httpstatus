@@ -18,7 +18,7 @@
         	'history' => '/api/history/{id}',
         	'insert' => '/api/add',
         	'delete' => '/api/delete/{id}',
-        	'check_status' => '/api/sites'
+        	//'check_status' => '/api/sites'
         ]
     );
 
