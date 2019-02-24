@@ -106,26 +106,33 @@ class Httpstatus extends \Controller
 
     public function add ()
     {
-        $_SESSION['add_error'] = "";
-        if(!empty($_POST['add']))
+        if(empty($_SESSION['admin']))
         {
-            $name = $_POST['name'];
-            $url = $_POST['url'];
-
-            if(!empty($name) && !empty($url))
-            {
-                $_SESSION['add_error'] = "";
-                $sites = $this->internal_httpstatus->insertSite($name, $url);
-                header('Location: ./admin');
-            }
-            else
-            {
-                $_SESSION['add_error'] = '<span class="alert alert-danger">Thanks to complete all inputs</span>';
-                return $this->render('httpstatus/add');
-
-            }
+            header('Location: ./');
         }
-        return $this->render('httpstatus/add');
+        else
+        {
+            $_SESSION['add_error'] = "";
+            if(!empty($_POST['add']))
+            {
+                $name = $_POST['name'];
+                $url = $_POST['url'];
+
+                if(!empty($name) && !empty($url))
+                {
+                    $_SESSION['add_error'] = "";
+                    $sites = $this->internal_httpstatus->insertSite($name, $url);
+                    header('Location: ./admin');
+                }
+                else
+                {
+                    $_SESSION['add_error'] = '<span class="alert alert-danger">Thanks to complete all inputs</span>';
+                    return $this->render('httpstatus/add');
+
+                }
+            }
+            return $this->render('httpstatus/add');
+        }
 
     }
 
@@ -151,45 +158,66 @@ class Httpstatus extends \Controller
 
     public function delete (int $id)
     {
+        if(empty($_SESSION['admin']))
+        {
+            header('Location: ../');
+        }
+        else
+        {
             $id = $id ?? false;
             $deletion = $this->internal_httpstatus->delete_one_site($id);
             header('Location: ../admin');
+        }
     }
 
     public function update (int $id)
     {
-
-        $getSite = $this->internal_httpstatus->getOneSite($id);
-        $name = $getSite['name'];  
-        $url = $getSite['url'];  
-        $_SESSION['update_error'] = "";
-
-        if(!empty($_POST['update']))
+        if(empty($_SESSION['admin']))
         {
-            if(!empty($_POST['url']) && !empty($_POST['name']))
+            header('Location: ../');
+        }
+        else
+        {
+            $getSite = $this->internal_httpstatus->getOneSite($id);
+            $name = $getSite['name'];  
+            $url = $getSite['url'];  
+            $_SESSION['update_error'] = "";
+
+            if(!empty($_POST['update']))
             {
-                if($url != $_POST['url'] || $name != $_POST['name'])
+                if(!empty($_POST['url']) && !empty($_POST['name']))
                 {
-                    $name = $_POST['name'];
-                    $url = $_POST['url'];
-                    $update = $this->internal_httpstatus->update_one_site($id, $name, $url);
-                    header('Location: ../../httpstatus/admin');  
+                    if($url != $_POST['url'] || $name != $_POST['name'])
+                    {
+                        $name = $_POST['name'];
+                        $url = $_POST['url'];
+                        $update = $this->internal_httpstatus->update_one_site($id, $name, $url);
+                        header('Location: ../../httpstatus/admin');  
+                    }
+                    else
+                    {
+                        $_SESSION['update_error'] = '<span class="alert alert-danger">Aucun changement detecté</span>';
+                        return $this->render('httpstatus/update', [
+                            'id' => $id,
+                            'url' => $url,
+                            'name' => $name
+                        ]);
+
+                    }
+
                 }
                 else
                 {
-                    $_SESSION['update_error'] = '<span class="alert alert-danger">Aucun changement detecté</span>';
+                    $_SESSION['update_error'] = '<span class="alert alert-danger">Please complete all inputs</span>';
                     return $this->render('httpstatus/update', [
                         'id' => $id,
                         'url' => $url,
                         'name' => $name
                     ]);
-
                 }
-
             }
-            else
+            else 
             {
-                $_SESSION['update_error'] = '<span class="alert alert-danger">Please complete all inputs</span>';
                 return $this->render('httpstatus/update', [
                     'id' => $id,
                     'url' => $url,
@@ -197,14 +225,8 @@ class Httpstatus extends \Controller
                 ]);
             }
         }
-        else 
-        {
-            return $this->render('httpstatus/update', [
-                'id' => $id,
-                'url' => $url,
-                'name' => $name
-            ]);
-        }
+
+
     }
 
 
